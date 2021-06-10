@@ -27,7 +27,7 @@ nom=$(<$OUTPUT)
 
 rm $OUTPUT
 
-dialog --title "Télechargement de mp3 youtube" \
+dialog --title "Téléchargement de mp3 youtube" \
 --backtitle "ytdl V0.1" \
 --inputbox "son url" 10 60 2>$OUTPUT
 
