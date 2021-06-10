@@ -1,12 +1,23 @@
 #!/bin/bash
 
-countries=$(nordvpn countries)
-ask=()
-for i in $countries; do
-   $ask+=$i
-   echo $ask
-done
+listCountries=$(nordvpn countries | sed s///g | sed s/-//g | sed s/,//g | sort)
+country=$(zenity \
+   --list \
+   --width 500 --height 500 \
+   --column "Choisissez un pays" \
+   --text $listCountries)
 
-#dialog --title "nordvpnCLI V0.1" \
-   #--backtitle "NORDVPN" \
-   #--menu "Veuillez sélectioner un pays" 30 50 50 $countries
+listCities=$(nordvpn cities $country | sed s///g | sed s/-//g | sed s/,//g | sort)
+city=$(zenity \
+   --list \
+   --width 500 --height 500 \
+   --column "Choisissez une ville" \
+   --text $listCities)
+
+nordvpn connect $country $city
+
+wait
+
+zenity --info \
+   --width 500 --height 50 \
+   --text "Vous êtes connecté (normalement) à $country $city"

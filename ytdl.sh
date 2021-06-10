@@ -1,8 +1,4 @@
 #!/bin/bash
-OUTPUT="/tmp/input.txt"
-
->$OUTPUT
-
 function playlist(){
    name=$1
    url=$2
@@ -14,34 +10,42 @@ function playlist(){
 
 function vid(){
    clear
+   url=$1
    cd $HOME/Documents/Musiques/
-   youtube-dl -i --extract-audio --audio-format mp3 --audio-quality 0
+   youtube-dl -i --extract-audio --audio-format mp3 --audio-quality 0 "$url"
 }
 
-trap "rm $OUTPUT; rm $INPUT; exit" SIGHUP SIGINT SIGTERM
+if zenity --question --width 250 --text "Is it a playlist or a single song ?" --ok-label "Playlist" --cancel-label "Single song"; then
+   name=$(
+   zenity --entry \
+      --width 250 \
+      --text "enter playlist name"
+   )
+   link=$(
+   zenity --entry \
+      --width 250 \
+      --text "enter playlist link"
+   )
+   playlist $name $link
+   wait
+   zenity --info \
+      --width 250 \
+      --text "Playlist downloaded !"
+else
+   name=$(
+   zenity --entry \
+      --width 250 \
+      --text "enter video name"
+   )
+   link=$(
+   zenity --entry \
+      --width 250 \
+      --text "enter video url"
+   )
+   vid $link
+   wait
+   zenity --info \
+      --width 250 \
+      --text "Video downloaded"
+fi
 
-dialog --title "Télechargement de mp3 youtube" \
---backtitle "ytdl V0.1" \
---inputbox "Nom de la playlist (si playlist)" 10 60 2>$OUTPUT
-nom=$(<$OUTPUT)
-
-rm $OUTPUT
-
-dialog --title "Téléchargement de mp3 youtube" \
---backtitle "ytdl V0.1" \
---inputbox "son url" 10 60 2>$OUTPUT
-
-lien=$(<$OUTPUT)
-
-rm $OUTPUT
-
-dialog --title "Télechargement de mp3 youtube" \
---backtitle "ytdl V0.1" \
---yesno "Le lien est une playlist ? (sinon vidéo simple)" 10 60
-response=$?
-
-case $response in
-   0) playlist $nom $lien;;
-   1) vid;;
-   255) echo "[ESC] key pressed.";;
-esac

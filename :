@@ -1,7 +1,0 @@
-#!/bin/bash
-
-countries=$(nordvpn countries)
-
-dialog --title "nordvpnCLI V0.1" \
-   --backtitle "NORDVPN" \
-   --menu "Veuillez sélectioner un pays" 15 55 5 $countries ""
