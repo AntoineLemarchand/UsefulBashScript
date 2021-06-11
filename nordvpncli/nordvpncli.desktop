@@ -1,0 +1,4 @@
+[Desktop Entry]
+Name=nordvpn
+Exec=/opt/nordvpncli.sh
+Type=Application

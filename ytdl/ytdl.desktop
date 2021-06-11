@@ -1,0 +1,5 @@
+[Desktop Entry]
+Name=Youtube-DL
+Exec=/opt/ytdlcli/ytdl.sh
+Icon=/opt/ytdlcli/ytdl.png
+Type=Application
